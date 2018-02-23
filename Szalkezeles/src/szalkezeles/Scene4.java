@@ -3,10 +3,14 @@ package szalkezeles;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
-public class Jelenet5 {
+public class Scene4 {
 
 	volatile boolean shouldStop = false;
+
+	// ahányat adunk neki értéknek, annyi szálat enged át egyszerre
+	final Semaphore semaphore = new Semaphore (1, true);
 
 	private class Szal1 extends Thread {
 
@@ -23,10 +27,10 @@ public class Jelenet5 {
 			long counter = 0;
 			try {
 				while (!shouldStop) {
-					synchronized (list) {
-						list.addFirst (random.nextDouble ());
-						list.removeLast ();
-					}
+					semaphore.acquire ();
+					list.addFirst (random.nextDouble ());
+					list.removeLast ();
+					semaphore.release ();
 					++counter;
 				}
 			}
@@ -54,11 +58,11 @@ public class Jelenet5 {
 			long counter = 0;
 			try {
 				while (!shouldStop) {
-					synchronized (list) {
-						if (!list.isEmpty ()) {
-							list.removeLast ();
-						}
+					semaphore.acquire ();
+					if (!list.isEmpty ()) {
+						list.removeLast ();
 					}
+					semaphore.release ();
 					++counter;
 				}
 			}

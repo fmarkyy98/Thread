@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class Jelenet3 {
+public class Scene3 {
 
 	volatile boolean shouldStop = false;
 

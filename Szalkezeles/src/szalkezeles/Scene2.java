@@ -2,16 +2,16 @@ package szalkezeles;
 
 import java.util.Scanner;
 
-public class Jelenet2 {
+public class Scene2 {
 
 	private class Szal extends Thread {
 
 		@Override
 		public void run () {
-			System.out.println("Szal elindult");
+			System.out.println("Thread started.");
 			while (!isInterrupted ())
 				;
-			System.out.println("Szal befejezodott");
+			System.out.println("Thread stopped.");
 		}
 	}
 
@@ -20,7 +20,7 @@ public class Jelenet2 {
 		final Szal sz = new Szal ();
 		sz.start ();
 
-		System.out.println("Uss entert hogy lealljon a szal.");
+		System.out.println("Press Enter to stop the thread.");
 
 		new Scanner (System.in).nextLine ();
 
