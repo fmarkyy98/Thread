@@ -4,30 +4,31 @@ import java.util.Scanner;
 
 public class Scene2 {
 
-	private class Szal extends Thread {
+    private class MyThread extends Thread {
 
-		@Override
-		public void run () {
-			System.out.println("Thread started.");
-			while (!isInterrupted ())
+        @Override
+        public void run() {
+            System.out.println("Thread started.");
+            while (!isInterrupted())
 				;
-			System.out.println("Thread stopped.");
-		}
-	}
+            System.out.println("Thread stopped.");
+        }
+    }
 
+    public void futtat() {
+        final MyThread sz = new MyThread();
+        sz.start();
 
-	public void futtat () {
-		final Szal sz = new Szal ();
-		sz.start ();
+        System.out.println("Press Enter to stop the thread.");
 
-		System.out.println("Press Enter to stop the thread.");
+        new Scanner(System.in).nextLine();
 
-		new Scanner (System.in).nextLine ();
+        sz.interrupt();
 
-		sz.interrupt ();
+        try {
+            sz.join();
+        } catch (final InterruptedException ignore) {
+        }
+    }
 
-		try { sz.join (); }
-		catch (final InterruptedException ignore) {}
-	}
-	
 }

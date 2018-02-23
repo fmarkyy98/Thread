@@ -6,75 +6,71 @@ import java.util.Random;
 
 public class Scene3 {
 
-	volatile boolean shouldStop = false;
+    volatile boolean shouldStop = false;
 
+    private class MyThread1 extends Thread {
 
-	private class Szal1 extends Thread {
+        private final Random random = new Random();
 
-		private final Random random = new Random ();
+        private final LinkedList<Double> list;
 
-		private final LinkedList<Double> list;
+        public MyThread1(final LinkedList<Double> l) {
+            list = l;
+        }
 
-		public Szal1 (final LinkedList<Double> l) {
-			list = l;
-		}
+        @Override
+        public void run() {
+            try {
+                while (!shouldStop) {
+                    list.addFirst(random.nextDouble());
+                    //try { sleep (200); }
+                    //catch (final InterruptedException ignore) {}
+                    list.removeLast();
+                }
+            } catch (final Exception ex) {
+                System.err.println("Thread1: " + ex);
+                shouldStop = true;
+            }
+        }
+    }
 
-		@Override
-		public void run () {
-			try {
-				while (!shouldStop) {
-					list.addFirst (random.nextDouble ());
-					//try { sleep (200); }
-					//catch (final InterruptedException ignore) {}
-					list.removeLast ();
-				}
-			}
-			catch (final Exception ex) {
-				System.err.println("Szal1: " + ex);
-				shouldStop = true;
-			}
-		}
-	}
+    private class MyThread2 extends Thread {
 
+        private final Random random = new Random();
 
-	private class Szal2 extends Thread {
+        private final LinkedList<Double> list;
 
-		private final Random random = new Random ();
+        public MyThread2(final LinkedList<Double> l) {
+            list = l;
+        }
 
-		private final LinkedList<Double> list;
+        @Override
+        public void run() {
+            try {
+                while (!shouldStop) {
+                    if (!list.isEmpty()) {
+                        list.removeLast();
+                    }
+                }
+            } catch (final NoSuchElementException ex) {
+                System.err.println("Thread2: " + ex);
+                shouldStop = true;
+            }
+        }
+    }
 
-		public Szal2 (final LinkedList<Double> l) {
-			list = l;
-		}
+    public void futtat() {
+        final LinkedList<Double> list = new LinkedList<>();
+        final MyThread1 myThread1 = new MyThread1(list);
+        final MyThread2 myThread2 = new MyThread2(list);
 
-		@Override
-		public void run () {
-			try {
-				while (!shouldStop) {
-					if (!list.isEmpty ())
-						list.removeLast ();
-				}
-			}
-			catch (final NoSuchElementException ex) {
-				System.err.println("Szal2: " + ex);
-				shouldStop = true;
-			}
-		}
-	}
+        myThread2.start();
+        myThread1.start();
 
-
-	public void futtat () {
-		final LinkedList<Double> list = new LinkedList<> ();
-		final Szal1 sz1 = new Szal1 (list);
-		final Szal2 sz2 = new Szal2 (list);
-
-		sz2.start ();
-		sz1.start ();
-
-		try {
-			sz1.join ();
-			sz2.join ();
-		}
-		catch (final InterruptedException ignore) {}
-	}
+        try {
+            myThread1.join();
+            myThread2.join();
+        } catch (final InterruptedException ignore) {
+        }
+    }
 }
