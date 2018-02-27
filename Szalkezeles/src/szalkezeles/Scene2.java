@@ -15,18 +15,18 @@ public class Scene2 {
         }
     }
 
-    public void futtat() {
-        final MyThread sz = new MyThread();
-        sz.start();
+    public void run() {
+        final MyThread thred = new MyThread();
+        thred.start();
 
         System.out.println("Press Enter to stop the thread.");
 
         new Scanner(System.in).nextLine();
 
-        sz.interrupt();
+        thred.interrupt();
 
         try {
-            sz.join();
+            thred.join();
         } catch (final InterruptedException ignore) {
         }
     }

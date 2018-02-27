@@ -8,13 +8,13 @@ public class Scene5 {
 
     volatile boolean shouldStop = false;
 
-    private class Szal1 extends Thread {
+    private class MyThread1 extends Thread {
 
         private final Random random = new Random();
 
         private final LinkedList<Double> list;
 
-        public Szal1(final LinkedList<Double> l) {
+        public MyThread1(final LinkedList<Double> l) {
             list = l;
         }
 
@@ -37,13 +37,13 @@ public class Scene5 {
         }
     }
 
-    private class Szal2 extends Thread {
+    private class MyThread2 extends Thread {
 
         private final Random random = new Random();
 
         private final LinkedList<Double> list;
 
-        public Szal2(final LinkedList<Double> l) {
+        public MyThread2(final LinkedList<Double> l) {
             list = l;
         }
 
@@ -67,13 +67,13 @@ public class Scene5 {
         }
     }
 
-    public void futtat() {
+    public void run() {
         final LinkedList<Double> list = new LinkedList<>();
-        final Szal1 sz1 = new Szal1(list);
-        final Szal2 sz2 = new Szal2(list);
+        final MyThread1 thread1 = new MyThread1(list);
+        final MyThread2 Thread2 = new MyThread2(list);
 
-        sz2.start();
-        sz1.start();
+        Thread2.start();
+        thread1.start();
 
         System.out.println("Press Enter to stop all threads.");
         new Scanner(System.in).nextLine();
@@ -81,8 +81,8 @@ public class Scene5 {
         shouldStop = true;
 
         try {
-            sz1.join();
-            sz2.join();
+            thread1.join();
+            Thread2.join();
         } catch (final InterruptedException ignore) {
         }
     }

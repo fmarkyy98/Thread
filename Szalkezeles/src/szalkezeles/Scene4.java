@@ -71,7 +71,7 @@ public class Scene4 {
         }
     }
 
-    public void futtat() {
+    public void run() {
         final LinkedList<Double> list = new LinkedList<>();
         final MyThread1 myThread1 = new MyThread1(list);
         final MyThread2 myThread2 = new MyThread2(list);
